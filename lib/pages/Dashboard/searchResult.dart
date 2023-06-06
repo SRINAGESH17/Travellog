@@ -88,6 +88,24 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   return Column(
                     children: [
                       Container(
+                          height: 70,
+                          width: 330,
+                          color: Colors.green.shade200,
+                          child: Center(
+                              child: Text(
+                            NumberFormat.currency(
+                                    decimalDigits: 0,
+                                    name: 'Rs. ',
+                                    locale: 'HI')
+                                .format(snapshot.data![0]),
+                            style: GoogleFonts.poppins(
+                                color: Colors.black,
+                                fontSize: 27,
+                                fontWeight: FontWeight.w700),
+                            textScaleFactor: 1.0,
+                          ))),
+                      const SizedBox(height: 10),
+                      Container(
                           height: 60,
                           width: 300,
                           color: Colors.green.shade200,
