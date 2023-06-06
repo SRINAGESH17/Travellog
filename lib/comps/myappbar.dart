@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -46,9 +48,9 @@ class _MyAppBarState extends State<MyAppBar> {
                       'Logout',
                       textScaleFactor: 1.0,
                     ),
-                    content: SingleChildScrollView(
+                    content: const SingleChildScrollView(
                       child: ListBody(
-                        children: const <Widget>[
+                        children: <Widget>[
                           Text(
                             'Are you sure want to Logout',
                             textScaleFactor: 1.0,
@@ -212,9 +214,9 @@ class _logoutButtonState extends State<logoutButton> {
                 'Logout',
                 textScaleFactor: 1.0,
               ),
-              content: SingleChildScrollView(
+              content: const SingleChildScrollView(
                 child: ListBody(
-                  children: const <Widget>[
+                  children: <Widget>[
                     Text(
                       'Are you sure want to Logout',
                       textScaleFactor: 1.0,
@@ -249,18 +251,21 @@ class _logoutButtonState extends State<logoutButton> {
                       List fcmList = snapshot.docs.first.get('fcmTokens');
                       if (fcmList.contains(fcmToken)) {
                         fcmList.remove(fcmToken);
-                        FirebaseFirestore.instance
+                        log('$fcmList');
+                        await FirebaseFirestore.instance
                             .collection("FcmToken")
                             .doc(docId)
                             .update({'fcmTokens': fcmList});
+                        log('$fcmToken has been removed');
                       }
                     }
                     await _auth.signOut();
-
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()));
+                    if (mounted) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()));
+                    }
                   },
                 ),
               ],

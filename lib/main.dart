@@ -29,6 +29,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print(message.messageId);
 }
+
 showNotification(RemoteMessage message) async {
   Map<String, dynamic> data = jsonDecode(message.data['message']);
   log(data.toString());
@@ -52,6 +53,7 @@ showNotification(RemoteMessage message) async {
     platformChannelSpecifics,
   );
 }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -80,7 +82,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   void updateFCM() async {
     var fcmToken = await FirebaseMessaging.instance.getToken();
-    print('$fcmToken has been added');
+    log('$fcmToken has been added');
     var snapshot = await FirebaseFirestore.instance
         .collection("FcmToken")
         .where("email", isEqualTo: 'admin@gmail.com')
