@@ -92,6 +92,7 @@ class _AddOperatorState extends State<AddOperator> {
 
   @override
   void dispose() {
+    super.dispose();
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
