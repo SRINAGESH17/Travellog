@@ -99,63 +99,53 @@ class _TotalScreenState extends State<TotalScreen> {
                               border: TableBorder.all(width: 1),
                               children: [
                                 TableRow(children: [
-                                  Center(
-                                    child: Text(
-                                      'BOOKING DATE',
-                                      style: GoogleFonts.poppins(
-                                          color: Colors.black,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              65,
-                                          fontWeight: FontWeight.w700),
-                                      textScaleFactor: 1.0,
-                                    ),
+                                  Text(
+                                    ' BOOKING DATE',
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.black,
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                65,
+                                        fontWeight: FontWeight.w700),
+                                    textScaleFactor: 1.0,
                                   ),
-                                  Center(
-                                    child: Text(
-                                      'TOTAL',
-                                      style: GoogleFonts.poppins(
-                                          color: Colors.black,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              65,
-                                          fontWeight: FontWeight.w700),
-                                      textScaleFactor: 1.0,
-                                    ),
+                                  Text(
+                                    ' TOTAL',
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.black,
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                65,
+                                        fontWeight: FontWeight.w700),
+                                    textScaleFactor: 1.0,
                                   ),
                                 ]),
                                 ...snapshot.data!.entries.map(
                                   (entry) {
                                     return TableRow(children: [
-                                      Center(
-                                        child: Text(
-                                          entry.key,
-                                          style: GoogleFonts.poppins(
-                                              color: Colors.black,
-                                              fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  70,
-                                              fontWeight: FontWeight.w700),
-                                          textScaleFactor: 1.0,
-                                        ),
+                                      Text(
+                                        ' ' + entry.key,
+                                        style: GoogleFonts.poppins(
+                                            color: Colors.black,
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                70,
+                                            fontWeight: FontWeight.w700),
+                                        textScaleFactor: 1.0,
                                       ),
-                                      Center(
-                                        child: Text(
-                                          entry.value == 0
-                                              ? ''
-                                              : '${entry.value}',
-                                          style: GoogleFonts.poppins(
-                                              color: Colors.black,
-                                              fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  70,
-                                              fontWeight: FontWeight.w700),
-                                          textScaleFactor: 1.0,
-                                        ),
+                                      Text(
+                                        entry.value == 0
+                                            ? ''
+                                            : ' ${entry.value}',
+                                        style: GoogleFonts.poppins(
+                                            color: Colors.black,
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                70,
+                                            fontWeight: FontWeight.w700),
+                                        textScaleFactor: 1.0,
                                       ),
                                     ]);
                                   },
@@ -167,17 +157,15 @@ class _TotalScreenState extends State<TotalScreen> {
                             children: [
                               TableRow(children: [
                                 Container(),
-                                Center(
-                                  child: Text(
-                                    '${snapshot.data!.values.fold(0, (previousValue, element) => previousValue + element)}',
-                                    style: GoogleFonts.poppins(
-                                        color: Colors.black,
-                                        fontSize:
-                                            MediaQuery.of(context).size.height /
-                                                65,
-                                        fontWeight: FontWeight.w700),
-                                    textScaleFactor: 1.0,
-                                  ),
+                                Text(
+                                  ' ${snapshot.data!.values.fold(0, (previousValue, element) => previousValue + element)}',
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.height /
+                                              65,
+                                      fontWeight: FontWeight.w700),
+                                  textScaleFactor: 1.0,
                                 ),
                               ])
                             ],

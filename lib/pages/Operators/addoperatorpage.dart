@@ -7,6 +7,7 @@ import 'package:travellog/comps/buttons.dart';
 import 'package:travellog/comps/myappbar.dart';
 import 'package:travellog/comps/textfields.dart';
 import 'package:travellog/pages/Operators/operators.dart';
+import 'package:travellog/utils.dart';
 
 class AddOperator extends StatefulWidget {
   const AddOperator({super.key});
@@ -46,7 +47,7 @@ class _AddOperatorState extends State<AddOperator> {
                 .update({
               'docId': value.id,
             }));
-
+        if (!mounted) return;
         Fluttertoast.showToast(
             backgroundColor: Colors.black54,
             msg: "New Operator Added",
@@ -55,10 +56,10 @@ class _AddOperatorState extends State<AddOperator> {
             timeInSecForIosWeb: 1,
             textColor: Colors.white,
             fontSize: 16.0);
-
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (BuildContext context) => Operators()),
+            MaterialPageRoute(
+                builder: (BuildContext context) => const Operators()),
             ModalRoute.withName('/'));
       } on FirebaseAuthException catch (e) {
         Navigator.pop(context);
@@ -66,17 +67,17 @@ class _AddOperatorState extends State<AddOperator> {
           SnackBar(
             content: Text(
               e.message as String,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.red,
               ),
             ),
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 3),
           ),
         );
       } catch (e) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text(
               "Please Enter the Correct Details",
               style: TextStyle(
@@ -107,7 +108,7 @@ class _AddOperatorState extends State<AddOperator> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MyAppBar2(title: "Add Operator"),
+            const MyAppBar2(title: "Add Operator"),
 
             // full name
 
@@ -155,7 +156,7 @@ class _AddOperatorState extends State<AddOperator> {
               controller: passwordController,
             ),
 
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
 
             // submit
 

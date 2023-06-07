@@ -20,6 +20,7 @@ import 'package:travellog/comps/textfields.dart';
 import 'package:http/http.dart';
 import 'package:travellog/pages/homepage.dart';
 import 'package:travellog/services/autoCompleteSearch.dart';
+import 'package:travellog/utils.dart';
 
 class NewEntry extends StatefulWidget {
   const NewEntry({super.key});
@@ -473,14 +474,15 @@ class _NewEntryState extends State<NewEntry> {
   }
 
   Future addnewentry2(String? pdfurl, String? pdfur2) async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return const Center(
+    //       child: CircularProgressIndicator(),
+    //     );
+    //   },
+    // );
+    await Future.delayed(Duration(seconds: 5));
     if (_journeydate == "Tap to select date") {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -493,7 +495,7 @@ class _NewEntryState extends State<NewEntry> {
           duration: Duration(seconds: 3),
         ),
       );
-      Navigator.pop(context);
+      // Navigator.pop(context);
       return null;
     }
     if (_bookingdate == "Tap to select date") {
@@ -508,7 +510,7 @@ class _NewEntryState extends State<NewEntry> {
           duration: Duration(seconds: 3),
         ),
       );
-      Navigator.pop(context);
+      // Navigator.pop(context);
       return null;
     }
     if (nameController.text == "") {
@@ -523,7 +525,7 @@ class _NewEntryState extends State<NewEntry> {
           duration: Duration(seconds: 3),
         ),
       );
-      Navigator.pop(context);
+      // Navigator.pop(context);
       return null;
     }
 
@@ -539,7 +541,7 @@ class _NewEntryState extends State<NewEntry> {
           duration: Duration(seconds: 3),
         ),
       );
-      Navigator.pop(context);
+      // Navigator.pop(context);
       return null;
     }
 
@@ -555,7 +557,7 @@ class _NewEntryState extends State<NewEntry> {
           duration: Duration(seconds: 3),
         ),
       );
-      Navigator.pop(context);
+      // Navigator.pop(context);
       return null;
     }
 
@@ -571,7 +573,7 @@ class _NewEntryState extends State<NewEntry> {
           duration: Duration(seconds: 3),
         ),
       );
-      Navigator.pop(context);
+      // Navigator.pop(context);
       return null;
     }
 
@@ -587,7 +589,7 @@ class _NewEntryState extends State<NewEntry> {
           duration: Duration(seconds: 3),
         ),
       );
-      Navigator.pop(context);
+      // Navigator.pop(context);
       return null;
     }
 
@@ -603,7 +605,7 @@ class _NewEntryState extends State<NewEntry> {
           duration: Duration(seconds: 3),
         ),
       );
-      Navigator.pop(context);
+      // Navigator.pop(context);
       return null;
     }
 
@@ -685,7 +687,7 @@ class _NewEntryState extends State<NewEntry> {
               builder: (BuildContext context) => const HomePage()),
           ModalRoute.withName('/'));
     } on Exception {
-      Navigator.pop(context);
+      // Navigator.pop(context);
     }
   }
 
@@ -978,7 +980,7 @@ class _NewEntryState extends State<NewEntry> {
                     return autoCompleteSearch
                         .getCustomerSuggestions(pattern.trim());
                   },
-                  itemBuilder: (context, suggestion) {
+                  itemBuilder: (itemcontext, suggestion) {
                     return ListTile(
                       title: Text(
                         suggestion,
@@ -1007,7 +1009,7 @@ class _NewEntryState extends State<NewEntry> {
                   stream: FirebaseFirestore.instance
                       .collection('modeoftransport')
                       .snapshots(),
-                  builder: (BuildContext context,
+                  builder: (BuildContext transportcontext,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData) {
                       return const Text('Loading...');
@@ -1411,10 +1413,11 @@ class _NewEntryState extends State<NewEntry> {
                   //   final pdfurl2 = await _uploadPDF2();
                   //   addnewentry2(pdfurl2);
                   // }
-
+                  Utils(context).startLoading();
                   final pdfurl = await _uploadPDF();
                   if (_pdfFile2 != null) final pdfurl2 = await _uploadPDF2();
-                  addnewentry2(pdfurl, pdfurl2);
+                  await addnewentry2(pdfurl, pdfurl2);
+                  Utils(context).stopLoading();
                 },
               )
             ],

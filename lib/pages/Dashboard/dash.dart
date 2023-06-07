@@ -9,6 +9,7 @@ import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:travellog/pages/Dashboard/goaTicketOutput.dart';
 import 'package:travellog/pages/Dashboard/searchResult.dart';
+import 'package:travellog/pages/Dashboard/stayScreen.dart';
 import 'package:travellog/pages/Dashboard/totalScreen.dart';
 import 'package:travellog/pages/Settingss/settingspage.dart';
 
@@ -224,7 +225,17 @@ class _DashState extends State<Dash> {
                   )
                 : Container(),
 
-            //
+            MyButton3(
+                title: "Stay",
+                ontapp: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          settings: RouteSettings(arguments: cityList),
+                          builder: (context) {
+                            return const StayScreen();
+                          }));
+                }),
 
             const SizedBox(height: 10),
             Row(

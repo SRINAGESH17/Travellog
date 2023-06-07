@@ -286,7 +286,7 @@ class Operators extends StatelessWidget {
                                                         children: const <
                                                             Widget>[
                                                           Text(
-                                                              'Are you sure want to detele operator?'),
+                                                              'Are you sure want to delete operator?'),
                                                         ],
                                                       ),
                                                     ),

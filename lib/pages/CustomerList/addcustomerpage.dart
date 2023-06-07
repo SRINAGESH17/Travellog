@@ -152,6 +152,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
 
   @override
   void dispose() {
+    super.dispose();
     CusNameController.dispose();
     CusNumberContoller.dispose();
   }

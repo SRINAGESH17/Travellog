@@ -39,7 +39,7 @@ class _DailyReportState extends State<DailyReport> {
 
   int _total = 0;
 
-  int tot = 0;
+  String tot = '';
 
   Future<void> _selectjourneyDate(BuildContext context) async {
     final DateTime? d = await showDatePicker(
@@ -182,7 +182,7 @@ class _DailyReportState extends State<DailyReport> {
     setState(() {
       _total = sum;
       tot = NumberFormat.currency(decimalDigits: 0, name: 'Rs.', locale: 'HI')
-          .format(_total) as int;
+          .format(_total);
     });
   }
 
@@ -291,24 +291,22 @@ class _DailyReportState extends State<DailyReport> {
                   //               ))),
                   const SizedBox(height: 10),
                   Container(
-                      height: 60,
-                      width: 300,
+                      padding: EdgeInsets.all(10),
                       color: Colors.green.shade200,
-                      child: Center(
-                          child: isLoading
-                              ? const CircularProgressIndicator()
-                              : Text(
-                                  NumberFormat.currency(
-                                          decimalDigits: 0,
-                                          name: 'Rs. ',
-                                          locale: 'HI')
-                                      .format(_total),
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.black,
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w700),
-                                  textScaleFactor: 1.0,
-                                ))),
+                      child: isLoading
+                          ? Center(child: const CircularProgressIndicator())
+                          : Text(
+                              NumberFormat.currency(
+                                      decimalDigits: 0,
+                                      name: 'Rs. ',
+                                      locale: 'HI')
+                                  .format(_total),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w700),
+                              textScaleFactor: 1.0,
+                            )),
                 ],
               ),
             ),
