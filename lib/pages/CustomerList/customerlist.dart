@@ -78,7 +78,7 @@ class _CustomerListState extends State<CustomerList> {
 
   int _totalDocuments = 0;
 
-  void _getTotalDocuments() async {
+  Future _getTotalDocuments() async {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection("Customerslist").get();
     setState(() {
@@ -320,6 +320,7 @@ class _CustomerListState extends State<CustomerList> {
                                                               .delete();
                                                           Navigator.of(context)
                                                               .pop();
+                                                          await _getTotalDocuments();
 
                                                           Fluttertoast.showToast(
                                                               backgroundColor:
@@ -337,6 +338,7 @@ class _CustomerListState extends State<CustomerList> {
                                                               textColor:
                                                                   Colors.white,
                                                               fontSize: 16.0);
+                                                          setState(() {});
                                                         },
                                                       ),
                                                     ],

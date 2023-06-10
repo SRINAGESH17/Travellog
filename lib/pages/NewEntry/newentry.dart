@@ -456,7 +456,7 @@ class _NewEntryState extends State<NewEntry> {
         'journeyDate': DateFormat('dd/MM/yy').format(_pickedjourneydate),
         'time': pickTimeUi,
       };
-      sendNotification(data);
+      // sendNotification(data);
 
       Fluttertoast.showToast(
           backgroundColor: Colors.black54,
@@ -613,21 +613,21 @@ class _NewEntryState extends State<NewEntry> {
       return null;
     }
 
-    if (_pdfFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Upload Doc 1",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      Navigator.pop(context);
-      return null;
-    }
+    // if (_pdfFile == null) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text(
+    //         "Upload Doc 1",
+    //         style: TextStyle(
+    //           color: Colors.red,
+    //         ),
+    //       ),
+    //       duration: Duration(seconds: 3),
+    //     ),
+    //   );
+    //   Navigator.pop(context);
+    //   return null;
+    // }
 
     try {
       DateTime now = DateTime.now();
@@ -674,7 +674,7 @@ class _NewEntryState extends State<NewEntry> {
         'journeyDate': DateFormat('dd/MM/yy').format(_pickedjourneydate),
         'time': pickTimeUi,
       };
-      sendNotification(data);
+      // sendNotification(data);
 
       Fluttertoast.showToast(
           backgroundColor: Colors.black54,

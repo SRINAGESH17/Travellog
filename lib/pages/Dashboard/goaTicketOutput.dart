@@ -625,8 +625,6 @@ class _GoaTicketOutputScreenState extends State<GoaTicketOutputScreen> {
                                                                       Navigator.of(
                                                                               context)
                                                                           .pop();
-                                                                      setState(
-                                                                          () {});
 
                                                                       Fluttertoast.showToast(
                                                                           backgroundColor: Colors
@@ -643,6 +641,8 @@ class _GoaTicketOutputScreenState extends State<GoaTicketOutputScreen> {
                                                                               .white,
                                                                           fontSize:
                                                                               16.0);
+                                                                      setState(
+                                                                          () {});
                                                                     },
                                                                   ),
                                                                 ],

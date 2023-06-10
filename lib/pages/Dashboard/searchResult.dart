@@ -547,6 +547,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                                                 .white,
                                                                         fontSize:
                                                                             16.0);
+                                                                    setState(
+                                                                        () {});
                                                                   },
                                                                 ),
                                                               ],

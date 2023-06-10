@@ -174,6 +174,7 @@ class _DailyReportState extends State<DailyReport> {
   }
 
   totalamount() async {
+    await _getTotalDocuments();
     final snapshot = await querySelect(fromcitycontroller, tocitycontroller)
         .get() as QuerySnapshot<Map>;
     int sum = 0;
@@ -188,7 +189,7 @@ class _DailyReportState extends State<DailyReport> {
 
   int _totalDocuments = 0;
 
-  void _getTotalDocuments() async {
+  Future _getTotalDocuments() async {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection("jd").get();
     setState(() {
@@ -291,22 +292,24 @@ class _DailyReportState extends State<DailyReport> {
                   //               ))),
                   const SizedBox(height: 10),
                   Container(
-                      padding: EdgeInsets.all(10),
+                      height: 70,
+                      width: 330,
                       color: Colors.green.shade200,
-                      child: isLoading
-                          ? Center(child: const CircularProgressIndicator())
-                          : Text(
-                              NumberFormat.currency(
-                                      decimalDigits: 0,
-                                      name: 'Rs. ',
-                                      locale: 'HI')
-                                  .format(_total),
-                              style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w700),
-                              textScaleFactor: 1.0,
-                            )),
+                      child: Center(
+                          child: isLoading
+                              ? const CircularProgressIndicator()
+                              : Text(
+                                  NumberFormat.currency(
+                                          decimalDigits: 0,
+                                          name: 'Rs. ',
+                                          locale: 'HI')
+                                      .format(_total),
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.black,
+                                      fontSize: 27,
+                                      fontWeight: FontWeight.w700),
+                                  textScaleFactor: 1.0,
+                                ))),
                 ],
               ),
             ),
@@ -988,7 +991,6 @@ class _DailyReportState extends State<DailyReport> {
                                                                           'Yes'),
                                                                   onPressed:
                                                                       () async {
-                                                                    totalamount();
                                                                     await FirebaseFirestore
                                                                         .instance
                                                                         .collection(
@@ -999,7 +1001,7 @@ class _DailyReportState extends State<DailyReport> {
                                                                     Navigator.of(
                                                                             context)
                                                                         .pop();
-
+                                                                    await totalamount();
                                                                     Fluttertoast.showToast(
                                                                         backgroundColor:
                                                                             Colors
@@ -1019,6 +1021,9 @@ class _DailyReportState extends State<DailyReport> {
                                                                                 .white,
                                                                         fontSize:
                                                                             16.0);
+
+                                                                    setState(
+                                                                        () {});
                                                                   },
                                                                 ),
                                                               ],
