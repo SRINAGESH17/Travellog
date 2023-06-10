@@ -89,19 +89,20 @@ class _TotalScreenState extends State<TotalScreen> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else {
-                  return Flexible(
+                  return Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                       child: Column(
                         children: [
-                          Flexible(
-                            child: Table(
-                              border: TableBorder.all(width: 1),
-                              children: [
-                                TableRow(children: [
-                                  Text(
+                          Table(
+                            border: TableBorder.all(width: 1),
+                            children: [
+                              TableRow(children: [
+                                Center(
+                                  child: Text(
                                     ' BOOKING DATE',
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(
+                                        fontFamily: 'Calibri',
                                         color: Colors.black,
                                         fontSize:
                                             MediaQuery.of(context).size.height /
@@ -109,9 +110,12 @@ class _TotalScreenState extends State<TotalScreen> {
                                         fontWeight: FontWeight.w700),
                                     textScaleFactor: 1.0,
                                   ),
-                                  Text(
+                                ),
+                                Center(
+                                  child: Text(
                                     ' TOTAL',
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(
+                                        fontFamily: 'Calibri',
                                         color: Colors.black,
                                         fontSize:
                                             MediaQuery.of(context).size.height /
@@ -119,13 +123,16 @@ class _TotalScreenState extends State<TotalScreen> {
                                         fontWeight: FontWeight.w700),
                                     textScaleFactor: 1.0,
                                   ),
-                                ]),
-                                ...snapshot.data!.entries.map(
-                                  (entry) {
-                                    return TableRow(children: [
-                                      Text(
+                                ),
+                              ]),
+                              ...snapshot.data!.entries.map(
+                                (entry) {
+                                  return TableRow(children: [
+                                    Center(
+                                      child: Text(
                                         ' ' + entry.key,
-                                        style: GoogleFonts.poppins(
+                                        style: TextStyle(
+                                            fontFamily: 'Calibri',
                                             color: Colors.black,
                                             fontSize: MediaQuery.of(context)
                                                     .size
@@ -134,11 +141,15 @@ class _TotalScreenState extends State<TotalScreen> {
                                             fontWeight: FontWeight.w700),
                                         textScaleFactor: 1.0,
                                       ),
-                                      Text(
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
                                         entry.value == 0
                                             ? ''
-                                            : ' ${entry.value}',
-                                        style: GoogleFonts.poppins(
+                                            : '${entry.value} ',
+                                        style: TextStyle(
+                                            fontFamily: 'Calibri',
                                             color: Colors.black,
                                             fontSize: MediaQuery.of(context)
                                                     .size
@@ -147,25 +158,29 @@ class _TotalScreenState extends State<TotalScreen> {
                                             fontWeight: FontWeight.w700),
                                         textScaleFactor: 1.0,
                                       ),
-                                    ]);
-                                  },
-                                ).toList(),
-                              ],
-                            ),
+                                    ),
+                                  ]);
+                                },
+                              ).toList(),
+                            ],
                           ),
                           Table(
                             children: [
                               TableRow(children: [
                                 Container(),
-                                Text(
-                                  ' ${snapshot.data!.values.fold(0, (previousValue, element) => previousValue + element)}',
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.black,
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              65,
-                                      fontWeight: FontWeight.w700),
-                                  textScaleFactor: 1.0,
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    ' ${snapshot.data!.values.fold(0, (previousValue, element) => previousValue + element)} ',
+                                    style: TextStyle(
+                                        fontFamily: 'Calibri',
+                                        color: Colors.black,
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                65,
+                                        fontWeight: FontWeight.w700),
+                                    textScaleFactor: 1.0,
+                                  ),
                                 ),
                               ])
                             ],

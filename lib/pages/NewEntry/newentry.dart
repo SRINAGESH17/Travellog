@@ -72,6 +72,10 @@ class _NewEntryState extends State<NewEntry> {
         _journeydate = new DateFormat.yMMMMd("en_US").format(d);
         _journeymonth = DateFormat('MMMM').format(d);
         _pickedjourneydate = d;
+        if (pickTime != null) {
+          updateJourneyDate();
+        }
+        log(_pickedjourneydate.toString());
       });
     }
   }

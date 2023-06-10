@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -148,8 +150,11 @@ class _GoaTicketOutputScreenState extends State<GoaTicketOutputScreen> {
     for (var data in snapshot) {
       if (data['TypeOFGuest'] == 'Guest' ||
           (data['Modeoftransport'] == 'Flight' && data['rev'] <= 1000)) {
+        log(data['Customername']);
+
         continue;
       }
+
       var journeyDateTime = data['Jorneydate'].toDate() as DateTime;
       var journeyDate = data['Jorneydate'].toDate();
       journeyDate = DateFormat('dd/MM/yy').format(journeyDate);
@@ -620,6 +625,8 @@ class _GoaTicketOutputScreenState extends State<GoaTicketOutputScreen> {
                                                                       Navigator.of(
                                                                               context)
                                                                           .pop();
+                                                                      setState(
+                                                                          () {});
 
                                                                       Fluttertoast.showToast(
                                                                           backgroundColor: Colors
