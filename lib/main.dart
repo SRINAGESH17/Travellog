@@ -51,7 +51,7 @@ showNotification(RemoteMessage message) async {
   FlutterLocalNotificationsPlugin().show(
     45452,
     data['mode'] == 'Cancel'
-        ? 'Ticket cancelled for ${data['name']} ${data['journeyDate']} ${data['time']}'
+        ? 'Ticket cancelled fo ${data['name']} ${data['journeyDate']} ${data['time']}'
         : ' ${data['name']} ${data['journeyDate']} ${data['time']}',
     '${data['fromCity']} to ${data['toCity']}',
     platformChannelSpecifics,

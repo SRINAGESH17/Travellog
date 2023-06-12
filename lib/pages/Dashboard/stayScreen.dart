@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -63,286 +62,96 @@ class _StayScreenState extends State<StayScreen> {
     var user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            MyAppBar2(title: '$cityList'),
-            FutureBuilder(
-                future: fetchAndCheck(cityList),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: const CircularProgressIndicator());
-                  }
-                  if (!snapshot.hasData) {
-                    return Center(child: const Text('No results'));
-                  } else {
-                    return Expanded(
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: snapshot.data!.map((document) {
-                          DateTime jdate = document['Jorneydate'].toDate();
-
-                          DateTime date = document['Bookingdate'].toDate();
-
-                          {
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(19, 5, 19, 5),
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * .18,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black12),
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(9)),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(30, 18, 30, 18),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 10),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '${sno++}. ' +
-                                                document['Customername'],
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w600),
-                                            textScaleFactor: 1.0,
-                                          ),
-                                          Text(
-                                            document['Amount'],
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w400),
-                                            textScaleFactor: 1.0,
-                                          ),
-                                        ],
-                                      ),
-                                      if (document['TypeOFGuest'] == "Guest")
-                                        Text(
-                                          document['TypeOFGuest'],
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400),
-                                          textScaleFactor: 1.0,
-                                        ),
-                                      const SizedBox(height: 5),
-                                      Flexible(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 0, 0, 20),
-                                              child: Text(
-                                                '${jdate.day}/${jdate.month}/${jdate.year}',
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 11,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                                textScaleFactor: 1.0,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 0, 20, 21),
-                                              child: Text(
-                                                document['Traveltime'],
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 11,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                                textScaleFactor: 1.0,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 5),
-
-                                            //  view doc
-
-                                            (user?.email == "admin@gmail.com")
-                                                ? Row(
-                                                    children: [
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          Navigator.of(context)
-                                                              .push(
-                                                            MaterialPageRoute<
-                                                                void>(
-                                                              builder: (BuildContext
-                                                                      context) =>
-                                                                  EditEntryPage(
-                                                                      docid: document
-                                                                          .id),
-                                                            ),
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                          width: 40,
-                                                          height: 40,
-                                                          decoration: BoxDecoration(
-                                                              color: Colors
-                                                                  .green
-                                                                  .shade300,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5)),
-                                                          child: const Icon(
-                                                              Icons.edit,
-                                                              size: 15),
-                                                        ),
-                                                      ),
-                                                      const SizedBox(width: 5),
-                                                      GestureDetector(
-                                                        onTap: () async {
-                                                          showDialog<void>(
-                                                            context: context,
-                                                            barrierDismissible:
-                                                                false, // user must tap button!
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                // <-- SEE HERE
-                                                                title: const Text(
-                                                                    'Delete Entry'),
-                                                                content:
-                                                                    const SingleChildScrollView(
-                                                                  child: Text(
-                                                                      'Are you sure want to Entry?'),
-                                                                ),
-                                                                actions: <
-                                                                    Widget>[
-                                                                  TextButton(
-                                                                    child:
-                                                                        const Text(
-                                                                            'No'),
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                  ),
-                                                                  TextButton(
-                                                                    child: const Text(
-                                                                        'Yes'),
-                                                                    onPressed:
-                                                                        () async {
-                                                                      await FirebaseFirestore
-                                                                          .instance
-                                                                          .collection(
-                                                                              'jd')
-                                                                          .doc(document
-                                                                              .id)
-                                                                          .delete();
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                      setState(
-                                                                          () {});
-                                                                      Fluttertoast.showToast(
-                                                                          backgroundColor: Colors
-                                                                              .black54,
-                                                                          msg:
-                                                                              "Entry Deleted",
-                                                                          toastLength: Toast
-                                                                              .LENGTH_SHORT,
-                                                                          gravity: ToastGravity
-                                                                              .SNACKBAR,
-                                                                          timeInSecForIosWeb:
-                                                                              1,
-                                                                          textColor: Colors
-                                                                              .white,
-                                                                          fontSize:
-                                                                              16.0);
-                                                                    },
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                          width: 40,
-                                                          height: 40,
-                                                          decoration: BoxDecoration(
-                                                              color: Colors
-                                                                  .green
-                                                                  .shade300,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5)),
-                                                          child: const Icon(
-                                                              Icons.delete,
-                                                              size: 15),
-                                                        ),
-                                                      ),
-                                                      const SizedBox(width: 5),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          Navigator.of(context)
-                                                              .push(
-                                                            MaterialPageRoute<
-                                                                    void>(
-                                                                builder:
-                                                                    (BuildContext
-                                                                            context) =>
-                                                                        NewEntry(
-                                                                          customerName:
-                                                                              document['Customername'],
-                                                                        )),
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                            width: 50,
-                                                            height: 40,
-                                                            decoration: BoxDecoration(
-                                                                color: Colors
-                                                                    .green
-                                                                    .shade300,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5)),
-                                                            child: Icon(Icons
-                                                                .keyboard_return)
-
-                                                            //  Center(
-                                                            //   child: const Text(
-                                                            //       'Return'),
-                                                            // ),
-                                                            ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                : Container(),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(height: 9),
-                                    ],
-                                  ),
-                                ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              MyAppBar2(title: '$cityList'),
+              FutureBuilder(
+                  future: fetchAndCheck(cityList),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (!snapshot.hasData) {
+                      return const Center(child: Text('No results'));
+                    } else {
+                      return Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Table(
+                          defaultColumnWidth: IntrinsicColumnWidth(),
+                          border: TableBorder.all(width: 1),
+                          children: [
+                            TableRow(children: [
+                              Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: const Center(child: Text('SL NO'))),
+                              Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: const Center(child: Text('NAME'))),
+                              Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: const Center(child: Text('DOJ'))),
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: const Center(child: Text('TIME')),
                               ),
-                            );
-                          }
-                        }).toList(),
-                      ),
-                    );
-                  }
-                }),
-          ],
+                              Container()
+                            ]),
+                            ...snapshot.data!.map((e) {
+                              var jdate =
+                                  (e.get('Jorneydate') as Timestamp).toDate();
+                              return TableRow(children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(child: Text('${sno++}')),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(e.get('Customername')),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                      child: Text(
+                                          '${jdate.day}/${jdate.month}/${jdate.year}')),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child:
+                                      Center(child: Text(e.get('Traveltime'))),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.all(10),
+                                  decoration:
+                                      const BoxDecoration(border: Border()),
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green.shade300,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => NewEntry(
+                                                  customerName:
+                                                      e.get('Customername')),
+                                            ));
+                                      },
+                                      child: const Text(
+                                        'R',
+                                        style: TextStyle(color: Colors.black),
+                                      )),
+                                )
+                              ]);
+                            })
+                          ],
+                        ),
+                      );
+                    }
+                  }),
+            ],
+          ),
         ),
       ),
     );
