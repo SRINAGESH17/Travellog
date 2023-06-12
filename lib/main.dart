@@ -42,13 +42,17 @@ showNotification(RemoteMessage message) async {
           color: Colors.green,
           styleInformation: BigTextStyleInformation(
             '${data['fromCity']} to ${data['toCity']}\n${data['journeyDate']} ${data['time']}',
-            contentTitle: '${data['name']}',
+            contentTitle: data['mode'] == 'Cancel'
+                ? 'Ticket Cancelled for ${data['name']}'
+                : '${data['name']}',
           ));
   NotificationDetails platformChannelSpecifics =
       NotificationDetails(android: androidPlatformChannelSpecifics);
   FlutterLocalNotificationsPlugin().show(
     45452,
-    '${data['name']} ${data['journeyDate']} ${data['time']}',
+    data['mode'] == 'Cancel'
+        ? 'Ticket cancelled for ${data['name']} ${data['journeyDate']} ${data['time']}'
+        : ' ${data['name']} ${data['journeyDate']} ${data['time']}',
     '${data['fromCity']} to ${data['toCity']}',
     platformChannelSpecifics,
   );

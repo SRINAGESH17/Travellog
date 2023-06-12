@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
-
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:http/http.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -263,6 +263,44 @@ class _EditCustomerPageState extends State<EditEntryPage> {
     }
   }
 
+  Future<List> getAdminToken() async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection("FcmToken")
+        .where("email", isEqualTo: 'admin@gmail.com')
+        .get();
+    return snapshot.docs.first.get('fcmTokens');
+  }
+
+  String capitalizeWords(String input) {
+    return input
+        .split(' ')
+        .map((word) =>
+            word.isEmpty ? '' : '${word[0].toUpperCase()}${word.substring(1)}')
+        .join(' ');
+  }
+
+  Future<void> sendNotification(Map<String, String> data) async {
+    var token = await getAdminToken();
+
+    var response = await post(
+      Uri.parse("https://fcm.googleapis.com/fcm/send"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'key='
+            'AAAAo68SOsw:APA91bFDv5sSA0iCm2U4rAQa9yWEDTN-WHBYzilgrZ1f1TFStNJSSLxvupOtEXg-CD2_JCkgV2k5t_6qUHrrHh_hcsYdstQFWGsnqO02qu-exCwoSaZPIJjLiSbycZE8MjU--gcHxkWG',
+      },
+      body: json.encode({
+        'notification': {
+          'body': '${data['fromCity']} to ${data['toCity']}',
+          'title': '${data['name']} ${data['journeyDate']} ${data['time']}'
+        },
+        'data': {'message': data},
+        'registration_ids': token,
+      }),
+    );
+    print(response.body);
+  }
+
   Future updateentry2(String? pdfurl, String? pdfurl2) async {
     showDialog(
       context: context,
@@ -295,6 +333,17 @@ class _EditCustomerPageState extends State<EditEntryPage> {
         'TypeOFGuest': _playerValue,
         'Reference': reffController.text
       });
+
+      Map<String, String> data = {
+        'mode': _playerValue,
+        'name': capitalizeWords(nameController.text),
+        'fromCity': fromcitycontroller.text,
+        'toCity': tocitycontroller.text,
+        'journeyDate': DateFormat('dd/MM/yy').format(_pickedjourneydate),
+        'time': pickTimeUi,
+      };
+
+      await sendNotification(data);
 
       Navigator.of(context).pop();
 
@@ -942,48 +991,64 @@ class _EditCustomerPageState extends State<EditEntryPage> {
                             textScaleFactor: 1.0,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                          child: Row(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Radio(
-                                    value: 'Player',
-                                    groupValue: _playerValue,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _playerValue = value!;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'Player',
-                                    textScaleFactor: 1.0,
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Radio(
-                                    value: 'Guest',
-                                    groupValue: _playerValue,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _playerValue = value!;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'Guest',
-                                    textScaleFactor: 1.0,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Radio(
+                                  value: 'Player',
+                                  groupValue: _playerValue,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _playerValue = value!;
+                                    });
+                                  },
+                                ),
+                                Text(
+                                  'Player',
+                                  textScaleFactor: 1.0,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Radio(
+                                  value: 'Guest',
+                                  groupValue: _playerValue,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _playerValue = value!;
+                                    });
+                                  },
+                                ),
+                                Text(
+                                  'Guest',
+                                  textScaleFactor: 1.0,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Radio(
+                                  value: 'Cancel',
+                                  groupValue: _playerValue,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _playerValue = value!;
+                                    });
+                                  },
+                                ),
+                                Text(
+                                  'Cancel',
+                                  textScaleFactor: 1.0,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
 
                         //

@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:travellog/comps/myappbar.dart';
 import 'package:travellog/pages/DialyReport/dialyreport.dart';
 import 'package:travellog/pages/NewEntry/editentrypage.dart';
+import 'package:travellog/pages/NewEntry/newentry.dart';
 
 class StayScreen extends StatefulWidget {
   const StayScreen({super.key});
@@ -41,7 +42,8 @@ class _StayScreenState extends State<StayScreen> {
     for (final customerName in latestTickets.keys) {
       final DocumentSnapshot latestTicket = latestTickets[customerName]!;
       final String toPlace = latestTicket.get('Toplace');
-      if (cityList.contains(toPlace)) {
+      if (cityList.contains(toPlace) &&
+          latestTicket['TypeOFGuest'] != 'Cancel') {
         customerResult.add(latestTicket);
       }
       customerResult.sort(
@@ -57,6 +59,7 @@ class _StayScreenState extends State<StayScreen> {
   Widget build(BuildContext context) {
     List<String> cityList =
         ModalRoute.of(context)!.settings.arguments as List<String>;
+    int sno = 1;
     var user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: SafeArea(
@@ -85,7 +88,7 @@ class _StayScreenState extends State<StayScreen> {
                               padding: const EdgeInsets.fromLTRB(19, 5, 19, 5),
                               child: Container(
                                 height:
-                                    MediaQuery.of(context).size.height * .24,
+                                    MediaQuery.of(context).size.height * .18,
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black12),
                                     color: Colors.white,
@@ -105,7 +108,8 @@ class _StayScreenState extends State<StayScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            document['Customername'],
+                                            '${sno++}. ' +
+                                                document['Customername'],
                                             style: GoogleFonts.poppins(
                                                 fontSize: 13,
                                                 fontWeight: FontWeight.w600),
@@ -128,113 +132,6 @@ class _StayScreenState extends State<StayScreen> {
                                               fontWeight: FontWeight.w400),
                                           textScaleFactor: 1.0,
                                         ),
-                                      const SizedBox(height: 0),
-                                      Flexible(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              document['Fromplace'] +
-                                                  " to " +
-                                                  document['Toplace'],
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600),
-                                              textScaleFactor: 1.0,
-                                            ),
-                                            Row(
-                                              children: [
-                                                StreamBuilder<Object>(
-                                                    stream: FirebaseFirestore
-                                                        .instance
-                                                        .collection("jd")
-                                                        .snapshots(),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      if (document[
-                                                              "ticketDoc"] ==
-                                                          "") {
-                                                        return Container();
-                                                      }
-
-                                                      return GestureDetector(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  MyPDFViewer(
-                                                                      url: document[
-                                                                          'ticketDoc']),
-                                                            ),
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                          width: 40,
-                                                          height: 40,
-                                                          decoration: BoxDecoration(
-                                                              color: Colors
-                                                                  .transparent,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5)),
-                                                          child: Image.asset(
-                                                            "assets/icons/pdf1.png",
-                                                            scale: 1.5,
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }),
-                                                SizedBox(width: 5),
-                                                StreamBuilder<Object>(
-                                                    stream: FirebaseFirestore
-                                                        .instance
-                                                        .collection("jd")
-                                                        .snapshots(),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      if (document[
-                                                              "ticketDoc2"] ==
-                                                          "") {
-                                                        return Container();
-                                                      }
-
-                                                      return GestureDetector(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  MyPDFViewer(
-                                                                      url: document[
-                                                                          'ticketDoc2']),
-                                                            ),
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                          width: 40,
-                                                          height: 40,
-                                                          decoration: BoxDecoration(
-                                                              color: Colors
-                                                                  .transparent,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5)),
-                                                          child: Image.asset(
-                                                            "assets/icons/pdf2.png",
-                                                            scale: 1.5,
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
                                       const SizedBox(height: 5),
                                       Flexible(
                                         child: Row(
@@ -391,6 +288,42 @@ class _StayScreenState extends State<StayScreen> {
                                                               size: 15),
                                                         ),
                                                       ),
+                                                      const SizedBox(width: 5),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            MaterialPageRoute<
+                                                                    void>(
+                                                                builder:
+                                                                    (BuildContext
+                                                                            context) =>
+                                                                        NewEntry(
+                                                                          customerName:
+                                                                              document['Customername'],
+                                                                        )),
+                                                          );
+                                                        },
+                                                        child: Container(
+                                                            width: 50,
+                                                            height: 40,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors
+                                                                    .green
+                                                                    .shade300,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5)),
+                                                            child: Icon(Icons
+                                                                .keyboard_return)
+
+                                                            //  Center(
+                                                            //   child: const Text(
+                                                            //       'Return'),
+                                                            // ),
+                                                            ),
+                                                      ),
                                                     ],
                                                   )
                                                 : Container(),
@@ -398,29 +331,6 @@ class _StayScreenState extends State<StayScreen> {
                                         ),
                                       ),
                                       SizedBox(height: 9),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            document['Modeoftransport'],
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w400),
-                                            textScaleFactor: 1.0,
-                                          ),
-                                          if (document['Reference'] != "")
-                                            Text(
-                                              "Ref : " + document['Reference'],
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w400),
-                                              textScaleFactor: 1.0,
-                                            ),
-                                        ],
-                                      ),
                                     ],
                                   ),
                                 ),

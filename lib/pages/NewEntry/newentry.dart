@@ -23,8 +23,8 @@ import 'package:travellog/services/autoCompleteSearch.dart';
 import 'package:travellog/utils.dart';
 
 class NewEntry extends StatefulWidget {
-  const NewEntry({super.key});
-
+  const NewEntry({super.key, this.customerName});
+  final String? customerName;
   @override
   State<NewEntry> createState() => _NewEntryState();
 }
@@ -191,6 +191,8 @@ class _NewEntryState extends State<NewEntry> {
     super.initState();
     _bookingdate = DateFormat.yMMMMd("en_US").format(DateTime.now());
     _pickedbookingdate = DateTime.now();
+
+    nameController.text = widget.customerName ?? "";
 
     FirebaseFirestore.instance
         .collection('Customerslist')
@@ -456,7 +458,6 @@ class _NewEntryState extends State<NewEntry> {
         'journeyDate': DateFormat('dd/MM/yy').format(_pickedjourneydate),
         'time': pickTimeUi,
       };
-      // sendNotification(data);
 
       Fluttertoast.showToast(
           backgroundColor: Colors.black54,
@@ -668,13 +669,15 @@ class _NewEntryState extends State<NewEntry> {
         'Customeraddedby': user.email! as String,
       });
       Map<String, String> data = {
+        'mode': _playerValue,
         'name': capitalizeWords(nameController.text),
         'fromCity': fromcitycontroller.text,
         'toCity': tocitycontroller.text,
         'journeyDate': DateFormat('dd/MM/yy').format(_pickedjourneydate),
         'time': pickTimeUi,
       };
-      // sendNotification(data);
+
+      sendNotification(data);
 
       Fluttertoast.showToast(
           backgroundColor: Colors.black54,
@@ -1310,48 +1313,64 @@ class _NewEntryState extends State<NewEntry> {
                   textScaleFactor: 1.0,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                child: Row(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Radio(
-                          value: 'Player',
-                          groupValue: _playerValue,
-                          onChanged: (value) {
-                            setState(() {
-                              _playerValue = value!;
-                            });
-                          },
-                        ),
-                        const Text(
-                          'Player',
-                          textScaleFactor: 1.0,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Radio(
-                          value: 'Guest',
-                          groupValue: _playerValue,
-                          onChanged: (value) {
-                            setState(() {
-                              _playerValue = value!;
-                            });
-                          },
-                        ),
-                        const Text(
-                          'Guest',
-                          textScaleFactor: 1.0,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Radio(
+                        value: 'Player',
+                        groupValue: _playerValue,
+                        onChanged: (value) {
+                          setState(() {
+                            _playerValue = value!;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Player',
+                        textScaleFactor: 1.0,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Radio(
+                        value: 'Guest',
+                        groupValue: _playerValue,
+                        onChanged: (value) {
+                          setState(() {
+                            _playerValue = value!;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Guest',
+                        textScaleFactor: 1.0,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Radio(
+                        value: 'Cancel',
+                        groupValue: _playerValue,
+                        onChanged: (value) {
+                          setState(() {
+                            _playerValue = value!;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Cancel',
+                        textScaleFactor: 1.0,
+                      ),
+                    ],
+                  ),
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

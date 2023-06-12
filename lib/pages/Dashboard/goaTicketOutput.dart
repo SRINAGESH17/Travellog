@@ -149,6 +149,7 @@ class _GoaTicketOutputScreenState extends State<GoaTicketOutputScreen> {
     print(dayCount);
     for (var data in snapshot) {
       if (data['TypeOFGuest'] == 'Guest' ||
+          data['TypeOFGuest'] == 'Cancel' ||
           (data['Modeoftransport'] == 'Flight' && data['rev'] <= 1000)) {
         log(data['Customername']);
 
