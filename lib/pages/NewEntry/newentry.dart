@@ -287,198 +287,7 @@ class _NewEntryState extends State<NewEntry> {
     print(response.body);
   }
 
-  Future addnewentry() async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-    if (_journeydate == "Tap to select date") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Fill Journey Date",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-            textScaleFactor: 1.0,
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      return null;
-    }
-    if (_bookingdate == "Tap to select date") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Fill Booking Date",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-            textScaleFactor: 1.0,
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      return null;
-    }
-    if (nameController.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Fill name",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      return null;
-    }
-
-    if (mode == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Select Mode",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      return null;
-    }
-
-    if (fromcitycontroller.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Select From City",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      return null;
-    }
-
-    if (tocitycontroller.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Select to City",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      return null;
-    }
-
-    if (pickTimeUi == "Time") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Fill Time",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      return null;
-    }
-
-    if (amountController.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Fill amount",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      return null;
-    }
-
-    try {
-      DateTime now = DateTime.now();
-      String currentMonth = DateFormat('MMMM').format(now);
-      int currentYear = now.year;
-      String amount = int.parse(amountController.text).toString();
-      int rev = int.parse(amountController.text);
-
-      /* -------------------- Checking If Customer Names Exist -------------------- */
-
-      if (!_existingNames.contains(nameController.text.toLowerCase())) {
-        await CustomerServices.addCustomerName(name: nameController.text);
-      }
-
-      /* ------------------------ Storing Data to Firebase ------------------------ */
-
-      FirebaseFirestore.instance.collection("jd").doc().set({
-        'Amount': amount,
-        'rev': rev,
-        'month': _journeymonth,
-        'year': currentYear,
-        'createdAt': _creadeddate,
-        'Jorneydate': _pickedjourneydate,
-        'Bookingdate': _pickedbookingdate,
-        'Customername': nameController.text,
-        // 'Customername': nameController.text,
-        'Modeoftransport': mode,
-        'Fromplace': fromcitycontroller.text,
-        'ticketDoc': "",
-        'Toplace': tocitycontroller.text,
-        'Traveltime': pickTime,
-        'Reference': reffController.text,
-        'TypeOFGuest': _playerValue,
-        'Customeraddedby': user.email! as String,
-      });
-
-      Map<String, String> data = {
-        'name': capitalizeWords(nameController.text),
-        'fromCity': fromcitycontroller.text,
-        'toCity': tocitycontroller.text,
-        'journeyDate': DateFormat('dd/MM/yy').format(_pickedjourneydate),
-        'time': pickTimeUi,
-      };
-
-      Fluttertoast.showToast(
-          backgroundColor: Colors.black54,
-          msg: "New Entry Added",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.SNACKBAR,
-          timeInSecForIosWeb: 1,
-          textColor: Colors.white,
-          fontSize: 16.0);
-
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => const HomePage()),
-          ModalRoute.withName('/'));
-    } on Exception {
-      Navigator.pop(context);
-    }
-  }
-
-  Future addnewentry2(String? pdfurl, String? pdfur2) async {
+  Future addnewentry(String? pdfurl, String? pdfur2) async {
     // showDialog(
     //   context: context,
     //   builder: (context) {
@@ -487,214 +296,217 @@ class _NewEntryState extends State<NewEntry> {
     //     );
     //   },
     // );
-    await Future.delayed(Duration(seconds: 5));
-    if (_journeydate == "Tap to select date") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Fill Journey Date",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      // Navigator.pop(context);
-      return null;
-    }
-    if (_bookingdate == "Tap to select date") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Fill Booking Date",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      // Navigator.pop(context);
-      return null;
-    }
-    if (nameController.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Fill name",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      // Navigator.pop(context);
-      return null;
-    }
 
-    if (mode == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Select Mode",
-            style: TextStyle(
-              color: Colors.red,
+    if (_playerValue != 'Dummy') {
+      if (_journeydate == "Tap to select date") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Fill Journey Date",
+              style: TextStyle(
+                color: Colors.red,
+              ),
             ),
+            duration: Duration(seconds: 3),
           ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      // Navigator.pop(context);
-      return null;
-    }
-
-    if (fromcitycontroller.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Select From City",
-            style: TextStyle(
-              color: Colors.red,
+        );
+        // Navigator.pop(context);
+        return null;
+      }
+      if (_bookingdate == "Tap to select date") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Fill Booking Date",
+              style: TextStyle(
+                color: Colors.red,
+              ),
             ),
+            duration: Duration(seconds: 3),
           ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      // Navigator.pop(context);
-      return null;
-    }
-
-    if (tocitycontroller.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Select to City",
-            style: TextStyle(
-              color: Colors.red,
+        );
+        // Navigator.pop(context);
+        return null;
+      }
+      if (nameController.text == "") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Fill name",
+              style: TextStyle(
+                color: Colors.red,
+              ),
             ),
+            duration: Duration(seconds: 3),
           ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      // Navigator.pop(context);
-      return null;
-    }
-
-    if (pickTimeUi == "Time") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Fill Time",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      // Navigator.pop(context);
-      return null;
-    }
-
-    if (amountController.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Fill amount",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      // Navigator.pop(context);
-      return null;
-    }
-
-    if (_pdfFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Upload Doc 1",
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      Navigator.pop(context);
-      return null;
-    }
-
-    try {
-      DateTime now = DateTime.now();
-      String currentMonth = DateFormat('MMMM').format(now);
-      int currentYear = now.year;
-      String amount = int.parse(amountController.text).toString();
-      int rev = int.parse(amountController.text);
-
-      /* -------------------- Checking If Customer Names Exist -------------------- */
-
-      if (!_existingNames.contains(nameController.text.toLowerCase())) {
-        await CustomerServices.addCustomerName(name: nameController.text);
+        );
+        // Navigator.pop(context);
+        return null;
       }
 
-      /* ------------------------ Storing Data to Firebase ------------------------ */
+      if (mode == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Select Mode",
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+        // Navigator.pop(context);
+        return null;
+      }
 
-      FirebaseFirestore.instance.collection("jd").doc().set({
-        'Amount': amount,
-        'rev': rev,
-        'month': _journeymonth,
-        'ticketDoc': pdfurl,
-        'ticketDoc2': pdfurl2,
-        'year': currentYear,
-        'createdAt': _creadeddate,
-        'Jorneydate': _pickedjourneydate,
-        'Bookingdate': _pickedbookingdate,
-        'Customername': nameController.text,
-        // 'Customername': nameController.text,
-        'Modeoftransport': mode,
-        'Fromplace': fromcitycontroller.text,
-        'Toplace': tocitycontroller.text,
-        'Reference': reffController.text,
-        'Traveltime': pickTimeUi,
-        'TypeOFGuest': _playerValue,
-        'time':
-            "", // need to store the travel time as timestamp EXAMPLE 11.00 as timestmap
+      if (fromcitycontroller.text == "") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Select From City",
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+        // Navigator.pop(context);
+        return null;
+      }
 
-        'Customeraddedby': user.email! as String,
-      });
-      Map<String, String> data = {
-        'mode': _playerValue,
-        'name': capitalizeWords(nameController.text),
-        'fromCity': fromcitycontroller.text,
-        'toCity': tocitycontroller.text,
-        'journeyDate': DateFormat('dd/MM/yy').format(_pickedjourneydate),
-        'time': pickTimeUi,
-      };
+      if (tocitycontroller.text == "") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Select to City",
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+        // Navigator.pop(context);
+        return null;
+      }
 
-      sendNotification(data);
+      if (pickTimeUi == "Time") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Fill Time",
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+        // Navigator.pop(context);
+        return null;
+      }
 
-      Fluttertoast.showToast(
-          backgroundColor: Colors.black54,
-          msg: "New Entry Added",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.SNACKBAR,
-          timeInSecForIosWeb: 1,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      if (amountController.text == "") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Fill amount",
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+        // Navigator.pop(context);
+        return null;
+      }
 
+      if (_pdfFile == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Upload Doc 1",
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+        Navigator.pop(context);
+        return null;
+      }
+    }
+
+    DateTime now = DateTime.now();
+    String currentMonth = DateFormat('MMMM').format(now);
+    int currentYear = now.year;
+    String amount = '0';
+    int rev = 0;
+    if (amountController.text.isNotEmpty) {
+      String amount = int.parse(amountController.text).toString();
+      int rev = int.parse(amountController.text);
+    }
+
+    /* -------------------- Checking If Customer Names Exist -------------------- */
+
+    if (!_existingNames.contains(nameController.text.toLowerCase())) {
+      await CustomerServices.addCustomerName(name: nameController.text);
+    }
+
+    /* ------------------------ Storing Data to Firebase ------------------------ */
+
+    FirebaseFirestore.instance.collection("jd").doc().set({
+      'Amount': amount,
+      'rev': rev,
+      'month': _journeymonth,
+      'ticketDoc': pdfurl,
+      'ticketDoc2': pdfurl2,
+      'year': currentYear,
+      'createdAt': _creadeddate,
+      'Jorneydate': _pickedjourneydate,
+      'Bookingdate': _pickedbookingdate,
+      'Customername': nameController.text,
+      // 'Customername': nameController.text,
+      'Modeoftransport': mode,
+      'Fromplace': fromcitycontroller.text,
+      'Toplace': tocitycontroller.text,
+      'Reference': reffController.text,
+      'Traveltime': pickTimeUi,
+      'TypeOFGuest': _playerValue,
+      'time':
+          "", // need to store the travel time as timestamp EXAMPLE 11.00 as timestmap
+
+      'Customeraddedby': user.email! as String,
+    });
+    Map<String, String> data = {
+      'mode': _playerValue,
+      'name': capitalizeWords(nameController.text),
+      'fromCity': fromcitycontroller.text,
+      'toCity': tocitycontroller.text,
+      'journeyDate': DateFormat('dd/MM/yy').format(_pickedjourneydate),
+      'time': pickTimeUi,
+    };
+
+    sendNotification(data);
+
+    Fluttertoast.showToast(
+        backgroundColor: Colors.black54,
+        msg: "New Entry Added",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.SNACKBAR,
+        timeInSecForIosWeb: 1,
+        textColor: Colors.white,
+        fontSize: 16.0);
+    if (mounted) {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => const HomePage()),
           ModalRoute.withName('/'));
-    } on Exception {
-      // Navigator.pop(context);
     }
   }
 
@@ -990,7 +802,7 @@ class _NewEntryState extends State<NewEntry> {
                   itemBuilder: (itemcontext, suggestion) {
                     return ListTile(
                       title: Text(
-                        suggestion,
+                        suggestion.toUpperCase(),
                         textScaleFactor: 1.0,
                       ),
                     );
@@ -1370,6 +1182,24 @@ class _NewEntryState extends State<NewEntry> {
                       ),
                     ],
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Radio(
+                        value: 'Dummy',
+                        groupValue: _playerValue,
+                        onChanged: (value) {
+                          setState(() {
+                            _playerValue = value!;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Dummy',
+                        textScaleFactor: 1.0,
+                      ),
+                    ],
+                  ),
                 ],
               ),
               Row(
@@ -1439,7 +1269,7 @@ class _NewEntryState extends State<NewEntry> {
                   Utils(context).startLoading();
                   final pdfurl = await _uploadPDF();
                   if (_pdfFile2 != null) final pdfurl2 = await _uploadPDF2();
-                  await addnewentry2(pdfurl, pdfurl2);
+                  await addnewentry(pdfurl, pdfurl2);
                   Utils(context).stopLoading();
                 },
               )
