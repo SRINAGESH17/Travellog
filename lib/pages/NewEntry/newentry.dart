@@ -424,21 +424,21 @@ class _NewEntryState extends State<NewEntry> {
         return null;
       }
 
-      if (_pdfFile == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Upload Doc 1",
-              style: TextStyle(
-                color: Colors.red,
-              ),
-            ),
-            duration: Duration(seconds: 3),
-          ),
-        );
-        Navigator.pop(context);
-        return null;
-      }
+      // if (_pdfFile == null) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(
+      //       content: Text(
+      //         "Upload Doc 1",
+      //         style: TextStyle(
+      //           color: Colors.red,
+      //         ),
+      //       ),
+      //       duration: Duration(seconds: 3),
+      //     ),
+      //   );
+      //   Navigator.pop(context);
+      //   return null;
+      // }
     }
 
     DateTime now = DateTime.now();
@@ -447,8 +447,8 @@ class _NewEntryState extends State<NewEntry> {
     String amount = '0';
     int rev = 0;
     if (amountController.text.isNotEmpty) {
-      String amount = int.parse(amountController.text).toString();
-      int rev = int.parse(amountController.text);
+      amount = amountController.text;
+      rev = int.parse(amountController.text);
     }
 
     /* -------------------- Checking If Customer Names Exist -------------------- */
@@ -491,7 +491,7 @@ class _NewEntryState extends State<NewEntry> {
       'time': pickTimeUi,
     };
 
-    sendNotification(data);
+    // sendNotification(data);
 
     Fluttertoast.showToast(
         backgroundColor: Colors.black54,

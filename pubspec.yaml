@@ -56,6 +56,9 @@ dependencies:
   path_provider: ^2.0.15
   permission_handler: ^10.3.0
   printing: ^5.10.4
+  device_info_plus: ^8.2.2
+  document_file_save_plus: ^2.0.0
+  share_plus: 7.0.0
 
 dev_dependencies:
   flutter_test:
