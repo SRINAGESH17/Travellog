@@ -58,7 +58,7 @@ dependencies:
   printing: ^5.10.4
   device_info_plus: ^8.2.2
   document_file_save_plus: ^2.0.0
-  share_plus: 7.0.0
+  share_plus: ^7.0.2
 
 dev_dependencies:
   flutter_test:

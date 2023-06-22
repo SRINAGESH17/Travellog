@@ -13,7 +13,7 @@ import 'package:travellog/pages/homepage.dart';
 AndroidNotificationChannel channel = const AndroidNotificationChannel(
     'high_importance_channel',
     'High Importance Notifications',
-    'This channel is used for important notifications.',
+    description: 'This channel is used for important notifications.',
     importance: Importance.high,
     playSound: true);
 const AndroidInitializationSettings initializationSettingsAndroid =
@@ -35,7 +35,8 @@ showNotification(RemoteMessage message) async {
   log(data.toString());
   AndroidNotificationDetails androidPlatformChannelSpecifics =
       AndroidNotificationDetails(
-          'channel', 'Chat messages', 'Chat messages will be received here',
+          'channel', 'Chat messages',
+          channelDescription: 'Chat messages will be received here',
           importance: Importance.max,
           priority: Priority.high,
           showWhen: true,
