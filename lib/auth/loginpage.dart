@@ -132,47 +132,47 @@ class _LoginPageState extends State<LoginPage> {
 
                 //
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 10, 10),
-                        child: Divider(),
-                      ),
-                    ),
-                    Text(
-                      "OR",
-                      style: GoogleFonts.poppins(
-                        color: Colors.grey.shade700,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 10, 30, 10),
-                        child: Divider(),
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Flexible(
+                //       child: Padding(
+                //         padding: const EdgeInsets.fromLTRB(30, 10, 10, 10),
+                //         child: Divider(),
+                //       ),
+                //     ),
+                //     Text(
+                //       "OR",
+                //       style: GoogleFonts.poppins(
+                //         color: Colors.grey.shade700,
+                //         fontSize: 14,
+                //         fontWeight: FontWeight.w400,
+                //       ),
+                //     ),
+                //     Flexible(
+                //       child: Padding(
+                //         padding: const EdgeInsets.fromLTRB(10, 10, 30, 10),
+                //         child: Divider(),
+                //       ),
+                //     ),
+                //   ],
+                // ),
 
                 // admin
 
                 // owner
 
-                MyButton1(
-                  title: "Direct Login",
-                  colored: Colors.green.shade200,
-                  ontapp: () async {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => const OwnerPage(),
-                      ),
-                    );
-                  },
-                )
+                // MyButton1(
+                //   title: "Direct Login",
+                //   colored: Colors.green.shade200,
+                //   ontapp: () async {
+                //     Navigator.of(context).push(
+                //       MaterialPageRoute<void>(
+                //         builder: (BuildContext context) => const OwnerPage(),
+                //       ),
+                //     );
+                //   },
+                // )
               ],
             ),
           ),
