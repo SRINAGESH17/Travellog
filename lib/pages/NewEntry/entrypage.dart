@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travellog/auth/loginpage.dart';
 import 'package:travellog/comps/buttons.dart';
 import 'package:travellog/comps/datepicker.dart';
 import 'package:travellog/comps/myappbar.dart';
@@ -150,7 +150,7 @@ class _EntryPageState extends State<EntryPage> {
   final fromcitycontroller = TextEditingController();
   final tocitycontroller = TextEditingController();
 
-  final user = FirebaseAuth.instance.currentUser!;
+  // final user = FirebaseAuth.instance.currentUser!;
   Future addEntryPage() async {
     if (_journeydate == "Tap to select date") {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -285,7 +285,7 @@ class _EntryPageState extends State<EntryPage> {
         'Fromplace': fromcitycontroller.text,
         'Toplace': tocitycontroller.text,
         'Traveltime': pickTime,
-        'Customeraddedby': user.email! as String,
+        'Customeraddedby': kUserEmail,
       });
 
       Fluttertoast.showToast(

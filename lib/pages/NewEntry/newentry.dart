@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -21,6 +20,8 @@ import 'package:http/http.dart';
 import 'package:travellog/pages/homepage.dart';
 import 'package:travellog/services/autoCompleteSearch.dart';
 import 'package:travellog/utils.dart';
+
+import '../../auth/loginpage.dart';
 
 class NewEntry extends StatefulWidget {
   const NewEntry({super.key, this.customerName});
@@ -248,7 +249,7 @@ class _NewEntryState extends State<NewEntry> {
   final tocitycontroller = TextEditingController();
   final reffController = TextEditingController(text: '');
 
-  final user = FirebaseAuth.instance.currentUser!;
+  // final user = FirebaseAuth.instance.currentUser!;
   Future<List> getAdminToken() async {
     var snapshot = await FirebaseFirestore.instance
         .collection("FcmToken")
@@ -480,7 +481,7 @@ class _NewEntryState extends State<NewEntry> {
       'time':
           "", // need to store the travel time as timestamp EXAMPLE 11.00 as timestmap
 
-      'Customeraddedby': user.email! as String,
+      'Customeraddedby': kUserEmail,
     });
     Map<String, String> data = {
       'mode': _playerValue,

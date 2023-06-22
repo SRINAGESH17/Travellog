@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -109,19 +108,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (FirebaseAuth.instance.currentUser!.email == 'admin@gmail.com') {
-              updateFCM();
-            }
-            return const HomePage();
-          } else {
-            return const LoginPage();
-          }
-        },
-      ),
+      home: LoginPage(),
+      // StreamBuilder(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.hasData) {
+      //       if (FirebaseAuth.instance.currentUser!.email == 'admin@gmail.com') {
+      //         updateFCM();
+      //       }
+      //       return const HomePage();
+      //     } else {
+      //       return const LoginPage();
+      //     }
+      //   },
+      // ),
     );
   }
 }

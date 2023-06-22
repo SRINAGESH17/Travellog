@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travellog/auth/loginpage.dart';
 import 'package:travellog/comps/cattile.dart';
 import 'package:travellog/comps/myappbar.dart';
 import 'package:travellog/date.dart';
@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final user = FirebaseAuth.instance.currentUser!;
+  // final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
               icon:
                   "https://img.icons8.com/fluency-systems-filled/256/poll-vertical.png",
             ),
-            (user.email == "admin@gmail.com")
+            kIsAdmin
                 ? CatTile(
                     ontapp: () {
                       Navigator.of(context).push(

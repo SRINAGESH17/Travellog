@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,20 +32,20 @@ class _AddOperatorState extends State<AddOperator> {
     );
     if (_formKey.currentState!.validate()) {
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text);
+        // await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        //     email: emailController.text, password: passwordController.text);
 
-        FirebaseFirestore.instance.collection("Operators").add({
+        final docRef = await FirebaseFirestore.instance.collection("Operators").add({
           'OperatorMail': emailController.text,
           'OperatorName': nameController.text,
           'OperatorPassword': passwordController.text,
           'isOperator': "1",
-        }).then((value) => FirebaseFirestore.instance
-                .collection("Operators")
-                .doc(value.id)
-                .update({
-              'docId': value.id,
-            }));
+        });
+        await FirebaseFirestore.instance.collection("Operators")
+            .doc(docRef.id)
+            .update({
+          'docId': docRef.id,
+          });
         if (!mounted) return;
         Fluttertoast.showToast(
             backgroundColor: Colors.black54,
@@ -56,25 +55,32 @@ class _AddOperatorState extends State<AddOperator> {
             timeInSecForIosWeb: 1,
             textColor: Colors.white,
             fontSize: 16.0);
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => const Operators()),
-            ModalRoute.withName('/'));
-      } on FirebaseAuthException catch (e) {
+        // Navigator.pushAndRemoveUntil(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (BuildContext context) => const Operators()),
+        //     ModalRoute.withName('/'));
+        FocusManager.instance.primaryFocus?.unfocus();
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              e.message as String,
-              style: const TextStyle(
-                color: Colors.red,
-              ),
-            ),
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      } catch (e) {
+        Navigator.pop(context);
+      }
+      // on FirebaseAuthException catch (e) {
+      //   Navigator.pop(context);
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       content: Text(
+      //         e.message as String,
+      //         style: const TextStyle(
+      //           color: Colors.red,
+      //         ),
+      //       ),
+      //       duration: const Duration(seconds: 3),
+      //     ),
+      //   );
+      // }
+      catch (e) {
+        FocusManager.instance.primaryFocus?.unfocus();
+        Navigator.pop(context);
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

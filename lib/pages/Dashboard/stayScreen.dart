@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:document_file_save_plus/document_file_save_plus.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -144,7 +143,7 @@ class _StayScreenState extends State<StayScreen> {
     List<String> cityList =
         ModalRoute.of(context)!.settings.arguments as List<String>;
     int sno = 1;
-    var user = FirebaseAuth.instance.currentUser;
+    // var user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

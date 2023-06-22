@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:travellog/auth/loginpage.dart';
 import 'package:travellog/comps/buttons.dart';
 import 'package:travellog/comps/myappbar.dart';
 import 'package:travellog/pages/DialyReport/dialyreport.dart';
@@ -26,7 +26,7 @@ class _FilterDeleteScreenState extends State<FilterDeleteScreen> {
   String _journeyfilterto = "To";
   int sum = 0;
   bool isLoading = true;
-  var user = FirebaseAuth.instance.currentUser;
+  // var user = FirebaseAuth.instance.currentUser;
 
   totalamount(
       Query query, DateTime fromBookingDate, DateTime toBookingDate) async {
@@ -615,7 +615,7 @@ class _FilterDeleteScreenState extends State<FilterDeleteScreen> {
                                         ),
                                       ),
                                       const SizedBox(width: 5),
-                                      (user!.email == "admin@gmail.com")
+                                      kIsAdmin
                                           ? Row(
                                               children: [
                                                 GestureDetector(

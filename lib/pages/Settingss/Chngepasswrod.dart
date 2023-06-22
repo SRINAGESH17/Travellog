@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:travellog/comps/buttons.dart';
 import 'package:travellog/comps/myappbar.dart';
 import 'package:travellog/comps/textfields.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class CPasswordPage extends StatefulWidget {
   final String docid;
@@ -16,7 +15,7 @@ class CPasswordPage extends StatefulWidget {
 }
 
 class _CPasswordPageState extends State<CPasswordPage> {
-  final _auth = FirebaseAuth.instance;
+  // final _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -35,8 +34,8 @@ class _CPasswordPageState extends State<CPasswordPage> {
     }
 
     try {
-      final user = _auth.currentUser;
-      await user?.updatePassword(newPassword);
+      // final user = _auth.currentUser;
+      // await user?.updatePassword(newPassword);
 
       FirebaseFirestore.instance.collection("admin").doc(widget.docid).update({
         'password': newPassword,
@@ -54,11 +53,16 @@ class _CPasswordPageState extends State<CPasswordPage> {
           fontSize: 16.0);
 
       // show success message or navigate to a success page
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       setState(() {
-        _errorMessage = e.message!;
+        _errorMessage = e.toString();
       });
     }
+    // on FirebaseAuthException catch (e) {
+    //   setState(() {
+    //     _errorMessage = e.message!;
+    //   });
+    // }
   }
 
   @override

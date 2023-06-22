@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -15,6 +14,8 @@ import 'package:travellog/comps/textfields.dart';
 import 'package:travellog/pages/NewEntry/editentrypage.dart';
 import 'package:travellog/revenue.dart';
 
+import '../../auth/loginpage.dart';
+
 class DailyReport extends StatefulWidget {
   const DailyReport({super.key});
 
@@ -25,7 +26,7 @@ class DailyReport extends StatefulWidget {
 class _DailyReportState extends State<DailyReport> {
   String _journeydate = 'Tap to select date';
 
-  final user = FirebaseAuth.instance.currentUser!;
+  // final user = FirebaseAuth.instance.currentUser!;
 
   final amountController = TextEditingController();
   final fromcitycontroller = TextEditingController();
@@ -921,7 +922,7 @@ class _DailyReportState extends State<DailyReport> {
 
                                           //  view doc
 
-                                          (user.email == "admin@gmail.com")
+                                          kIsAdmin
                                               ? Row(
                                                   children: [
                                                     GestureDetector(

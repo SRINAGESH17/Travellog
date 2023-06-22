@@ -1,12 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:travellog/auth/adminlogin.dart';
-import 'package:travellog/pages/Directlogin/ownerpage.dart';
 import 'package:travellog/comps/buttons.dart';
 import 'package:travellog/comps/textfields.dart';
-import 'package:travellog/pages/CustomerList/customerlist.dart';
-import 'package:travellog/pages/homepage.dart';
+
+import '../pages/homepage.dart';
+
+late final bool kIsAdmin;
+late final String kUserEmail;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,56 +19,198 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   String _errorMessage = '';
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> signInWithEmail() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
-        );
-        User user = userCredential.user!;
-        print('User ${user.uid} logged in');
+  // Future<void> signInWithEmail() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     try {
+  //       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+  //         email: emailController.text,
+  //         password: passwordController.text,
+  //       );
+  //       User user = userCredential.user!;
+  //       print('User ${user.uid} logged in');
+  //       Navigator.pushAndRemoveUntil(
+  //           context,
+  //           MaterialPageRoute(builder: (context) => HomePage()),
+  //           ModalRoute.withName("/Home"));
+  //     } on FirebaseAuthException catch (e) {
+  //       var errorCode = e.code;
+  //       var errorMessage = e.message;
+  //       if (errorCode == 'auth/wrong-password') {
+  //         setState(() {
+  //           _errorMessage = 'Enter the Correct Password';
+  //         });
+  //       }
+  //       if (e.code == 'user-not-found') {
+  //         setState(() {
+  //           _errorMessage = 'User not found';
+  //         });
+  //       } else if (e.code == 'wrong-password') {
+  //         setState(() {
+  //           _errorMessage = 'Incorrect password';
+  //         });
+  //       }
+  //     } catch (e) {
+  //       print('Error: $e');
+  //     }
+  //
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(
+  //           _errorMessage,
+  //           style: TextStyle(
+  //             color: Colors.red,
+  //           ),
+  //         ),
+  //         duration: Duration(seconds: 3),
+  //       ),
+  //     );
+  //   }
+  // }
+
+  Future<bool?> _signInAdmin(String email, String password) async {
+    final CollectionReference collectionRef = _firestore.collection('admin');
+    /// Specify the field and value to search for
+    const String fieldToSearch = 'email';
+
+    try {
+      final QuerySnapshot querySnapshot = await collectionRef
+          .where(fieldToSearch, isEqualTo: email)
+          .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        return false;
+      }
+
+      /// Documents with the matching field value are found
+      for (final DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+        /// Access the document data
+        final Map<String, dynamic>? data = documentSnapshot.data() as Map<String, dynamic>?;
+        if (data == null) {
+          Fluttertoast.showToast(msg: 'Some error occurred.');
+          return null;
+        }
+
+        final String? fetchedPassword = data['password'] as String?;
+        if (fetchedPassword == null) {
+          Fluttertoast.showToast(msg: 'Some error occurred.');
+          return null;
+        }
+
+        if (fetchedPassword != password) {
+          Fluttertoast.showToast(
+              msg: 'Incorrect password.', backgroundColor: Colors.red);
+          return null;
+        }
+
+        if (!mounted) {
+          return null;
+        }
+
+        return true;
+      }
+
+      return null;
+    } catch (error) {
+      print('Error: $error');
+      return null;
+    }
+  }
+
+  Future<bool?> _signInOperator(String email, String password) async {
+    final CollectionReference collectionRef = _firestore.collection('Operators');
+    /// Specify the field and value to search for
+    const String fieldToSearch = 'OperatorMail';
+
+    try {
+      final QuerySnapshot querySnapshot = await collectionRef
+          .where(fieldToSearch, isEqualTo: email)
+          .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        return false;
+      }
+
+      /// Documents with the matching field value are found
+      for (final DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+        /// Access the document data
+        final Map<String, dynamic>? data = documentSnapshot.data() as Map<String, dynamic>?;
+        if (data == null) {
+          Fluttertoast.showToast(msg: 'Some error occurred.');
+          return null;
+        }
+
+        final String? fetchedPassword = data['OperatorPassword'] as String?;
+        if (fetchedPassword == null) {
+          Fluttertoast.showToast(msg: 'Some error occurred.');
+          return null;
+        }
+
+        if (fetchedPassword != password) {
+          Fluttertoast.showToast(
+              msg: 'Incorrect password.', backgroundColor: Colors.red);
+          return null;
+        }
+
+        if (!mounted) {
+          return null;
+        }
+
+        return true;
+      }
+
+      return null;
+    } catch (error) {
+      print('Error: $error');
+      return null;
+    }
+  }
+
+  Future<void> _signIn() async {
+    final isValid = _formKey.currentState?.validate();
+    if (isValid == null || !isValid) {
+      return;
+    }
+
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    try {
+      final bool? isAdmin = await _signInAdmin(email, password);
+      if (isAdmin == null) {
+        return;
+      }
+      if (isAdmin) {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => HomePage()),
             ModalRoute.withName("/Home"));
-      } on FirebaseAuthException catch (e) {
-        var errorCode = e.code;
-        var errorMessage = e.message;
-        if (errorCode == 'auth/wrong-password') {
-          setState(() {
-            _errorMessage = 'Enter the Correct Password';
-          });
-        }
-        if (e.code == 'user-not-found') {
-          setState(() {
-            _errorMessage = 'User not found';
-          });
-        } else if (e.code == 'wrong-password') {
-          setState(() {
-            _errorMessage = 'Incorrect password';
-          });
-        }
-      } catch (e) {
-        print('Error: $e');
+        kIsAdmin = true;
+        kUserEmail = email;
+        return;
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            _errorMessage,
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
+      final bool? isOperator = await _signInOperator(email, password);
+      if (isOperator == null) {
+        return;
+      }
+      if (isOperator) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+            ModalRoute.withName("/Home"));
+        kIsAdmin = false;
+        kUserEmail = email;
+        return;
+      }
+
+      Fluttertoast.showToast(msg: 'Email not found.');
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -126,7 +270,7 @@ class _LoginPageState extends State<LoginPage> {
                   title: "Login",
                   colored: Colors.pink.shade200,
                   ontapp: () {
-                    signInWithEmail();
+                    _signIn();
                   },
                 ),
 

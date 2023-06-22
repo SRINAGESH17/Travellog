@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -40,8 +39,8 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   final origincontroller = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final user = FirebaseAuth.instance.currentUser!;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final user = FirebaseAuth.instance.currentUser!;
   final passwordController = TextEditingController();
   @override
   List<String> existingNames = [];
@@ -192,7 +191,7 @@ class _SettingPageState extends State<SettingPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           MyAppBar2(title: "Settings"),
-          (user.email == "admin@gmail.com")
+          kIsAdmin
               ? Column(
                   children: [
                     MyButton1(

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travellog/comps/buttons.dart';
@@ -11,7 +10,7 @@ final TextEditingController nameController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
 final TextEditingController emailController = TextEditingController();
 
-void updateFirestore(String docref) async {
+Future<void> updateFirestore(String docref) async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   try {
@@ -26,10 +25,10 @@ void updateFirestore(String docref) async {
     });
 
     // Update password in Firebase Authentication
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      await user.updatePassword(passwordController.text);
-    }
+    // User? user = FirebaseAuth.instance.currentUser;
+    // if (user != null) {
+    //   await user.updatePassword(passwordController.text);
+    // }
   } catch (e) {
     // Error message
     print('Error updating data in Firestore: $e');
@@ -114,19 +113,19 @@ class _EditOperatorPageState extends State<EditOperatorPage> {
             MyButton1(
               colored: Colors.amber.shade100,
               title: "Update",
-              ontapp: () {
-                updateFirestore(widget.docref);
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Operators()),
-                    ModalRoute.withName('/'));
+              ontapp: () async {
+                await updateFirestore(widget.docref);
+                // Navigator.pushAndRemoveUntil(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (BuildContext context) => Operators()),
+                //     ModalRoute.withName('/'));
+                Navigator.pop(context);
               },
             )
           ],
         ),
       )),
     );
-    ;
   }
 }

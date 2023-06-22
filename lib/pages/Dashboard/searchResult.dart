@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +9,7 @@ import 'package:travellog/comps/myappbar.dart';
 import 'package:travellog/pages/Dashboard/dateViewScreen.dart';
 import 'package:travellog/pages/NewEntry/editentrypage.dart';
 
+import '../../auth/loginpage.dart';
 import '../DialyReport/dialyreport.dart';
 
 class SearchResultScreen extends StatefulWidget {
@@ -60,10 +60,10 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     return [sum, totalTicketCount, dayCount, snapshot.docs];
   }
 
-  final user = FirebaseAuth.instance.currentUser!;
+  // final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
-    var user = FirebaseAuth.instance.currentUser;
+    // var user = FirebaseAuth.instance.currentUser;
     var settings =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     Query query = settings['query'];
@@ -448,7 +448,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
                                           //  view doc
 
-                                          (user?.email == "admin@gmail.com")
+                                          kIsAdmin
                                               ? Row(
                                                   children: [
                                                     GestureDetector(

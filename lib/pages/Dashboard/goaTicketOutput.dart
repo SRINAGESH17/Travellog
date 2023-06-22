@@ -3,12 +3,12 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:travellog/auth/loginpage.dart';
 import 'package:travellog/comps/myappbar.dart';
 import 'package:travellog/pages/Dashboard/dateViewScreen.dart';
 import 'package:travellog/pages/NewEntry/editentrypage.dart';
@@ -173,7 +173,7 @@ class _GoaTicketOutputScreenState extends State<GoaTicketOutputScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
+    // final user = FirebaseAuth.instance.currentUser!;
 
     var settings =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
@@ -546,7 +546,7 @@ class _GoaTicketOutputScreenState extends State<GoaTicketOutputScreen> {
 
                                             //  view doc
 
-                                            (user.email == "admin@gmail.com")
+                                            kIsAdmin
                                                 ? Row(
                                                     children: [
                                                       GestureDetector(

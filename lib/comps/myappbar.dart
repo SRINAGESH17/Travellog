@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,7 +17,7 @@ class MyAppBar extends StatefulWidget {
 }
 
 class _MyAppBarState extends State<MyAppBar> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -74,7 +73,7 @@ class _MyAppBarState extends State<MyAppBar> {
                           textScaleFactor: 1.0,
                         ),
                         onPressed: () async {
-                          await _auth.signOut();
+                          // await _auth.signOut();
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -107,7 +106,7 @@ class MyAppBar2 extends StatefulWidget {
 }
 
 class _MyAppBar2State extends State<MyAppBar2> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -154,7 +153,7 @@ class MyAppBar3 extends StatefulWidget {
 }
 
 class _MyAppBar3State extends State<MyAppBar3> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -199,7 +198,7 @@ class logoutButton extends StatefulWidget {
 }
 
 class _logoutButtonState extends State<logoutButton> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -240,7 +239,7 @@ class _logoutButtonState extends State<logoutButton> {
                     textScaleFactor: 1.0,
                   ),
                   onPressed: () async {
-                    if (_auth.currentUser!.email == 'admin@gmail.com') {
+                    if (kIsAdmin) {
                       var fcmToken =
                           await FirebaseMessaging.instance.getToken();
                       var snapshot = await FirebaseFirestore.instance
@@ -259,7 +258,7 @@ class _logoutButtonState extends State<logoutButton> {
                         log('$fcmToken has been removed');
                       }
                     }
-                    await _auth.signOut();
+                    // await _auth.signOut();
                     if (mounted) {
                       Navigator.pushReplacement(
                           context,
