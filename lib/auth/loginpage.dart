@@ -7,8 +7,8 @@ import 'package:travellog/comps/textfields.dart';
 
 import '../pages/homepage.dart';
 
-late final bool kIsAdmin;
-late final String kUserEmail;
+late bool kIsAdmin;
+late String kUserEmail;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -194,12 +194,12 @@ class _LoginPageState extends State<LoginPage> {
         return;
       }
       if (isAdmin) {
+        kIsAdmin = true;
+        kUserEmail = email;
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => HomePage()),
             );
-        kIsAdmin = true;
-        kUserEmail = email;
         return;
       }
 
@@ -211,12 +211,12 @@ class _LoginPageState extends State<LoginPage> {
         return;
       }
       if (isOperator) {
+        kIsAdmin = false;
+        kUserEmail = email;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
         );
-        kIsAdmin = false;
-        kUserEmail = email;
         return;
       }
 

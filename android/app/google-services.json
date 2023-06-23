@@ -41,42 +41,6 @@
           ]
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:703016876748:android:769688230ba436633aa069",
-        "android_client_info": {
-          "package_name": "com.travellogapp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "703016876748-cjngt7k4apsdvb0u106mledmtmj43jqo.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBfO4-fL_svWjIf4eNOs8Zy4PKanBdQjHU"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "703016876748-cjngt7k4apsdvb0u106mledmtmj43jqo.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "703016876748-juqc2n5uej30m3qt35r33q8215ih4gvk.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.travellog.travellogApp"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"
