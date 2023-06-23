@@ -7,12 +7,13 @@ class MyButton1 extends StatelessWidget {
   final Color colored;
 
   final VoidCallback ontapp;
+  final bool isLoading;
 
   const MyButton1(
       {super.key,
       required this.title,
       required this.colored,
-      required this.ontapp});
+      required this.ontapp, this.isLoading = false,});
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +26,19 @@ class MyButton1 extends StatelessWidget {
             height: 50,
             decoration: BoxDecoration(
                 color: colored, borderRadius: BorderRadius.circular(5)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.poppins(
-                      fontSize: 15, fontWeight: FontWeight.w600),
-                  textScaleFactor: 1.0,
-                ),
-              ],
-            )),
+            alignment: Alignment.center,
+            child: isLoading ? SizedBox(
+              width: 20, height: 20, child: CircularProgressIndicator(
+              color: Colors.black,
+              strokeWidth: 2,
+            ),
+            ) : Text(
+              title,
+              style: GoogleFonts.poppins(
+                  fontSize: 15, fontWeight: FontWeight.w600),
+              textScaleFactor: 1.0,
+            ),
+        ),
       ),
     );
   }

@@ -47,18 +47,21 @@ class _HomePageState extends State<HomePage> {
               icon:
                   "https://img.icons8.com/fluency-systems-filled/256/dashboard-layout.png",
             ),
-            CatTile(
-              ontapp: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => NewEntry(),
-                  ),
-                );
-              },
-              colored: Colors.amber.shade200,
-              title: "Ticket Entry",
-              description: "Lorem ipsum dolor sit amet, \nconsectetur",
-              icon: "https://img.icons8.com/material/256/details-popup.png",
+            Visibility(
+              visible: kIsAdmin,
+              child: CatTile(
+                ontapp: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => NewEntry(),
+                    ),
+                  );
+                },
+                colored: Colors.amber.shade200,
+                title: "Ticket Entry",
+                description: "Lorem ipsum dolor sit amet, \nconsectetur",
+                icon: "https://img.icons8.com/material/256/details-popup.png",
+              ),
             ),
             CatTile(
               ontapp: () {

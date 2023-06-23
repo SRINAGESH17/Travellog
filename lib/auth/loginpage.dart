@@ -21,8 +21,10 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  String _errorMessage = '';
+  // String _errorMessage = '';
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  bool _isLoading = false;
 
   // Future<void> signInWithEmail() async {
   //   if (_formKey.currentState!.validate()) {
@@ -179,16 +181,23 @@ class _LoginPageState extends State<LoginPage> {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final bool? isAdmin = await _signInAdmin(email, password);
       if (isAdmin == null) {
+        setState(() {
+          _isLoading = false;
+        });
         return;
       }
       if (isAdmin) {
-        Navigator.pushAndRemoveUntil(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => HomePage()),
-            ModalRoute.withName("/Home"));
+            );
         kIsAdmin = true;
         kUserEmail = email;
         return;
@@ -196,21 +205,30 @@ class _LoginPageState extends State<LoginPage> {
 
       final bool? isOperator = await _signInOperator(email, password);
       if (isOperator == null) {
+        setState(() {
+          _isLoading = false;
+        });
         return;
       }
       if (isOperator) {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-            ModalRoute.withName("/Home"));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
         kIsAdmin = false;
         kUserEmail = email;
         return;
       }
 
       Fluttertoast.showToast(msg: 'Email not found.');
+      setState(() {
+        _isLoading = false;
+      });
     } catch (e) {
       print(e.toString());
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -272,6 +290,7 @@ class _LoginPageState extends State<LoginPage> {
                   ontapp: () {
                     _signIn();
                   },
+                  isLoading: _isLoading,
                 ),
 
                 //

@@ -8,6 +8,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:travellog/auth/loginpage.dart';
 import 'package:travellog/comps/buttons.dart';
 import 'package:travellog/comps/downloadbox.dart';
 import 'package:travellog/comps/myappbar.dart';
@@ -101,7 +102,7 @@ class _CustomerListState extends State<CustomerList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: MyButton2(
+      floatingActionButton: kIsAdmin ? MyButton2(
         title: "Add Customer",
         colored: Colors.blue.shade200,
         ontapp: () {
@@ -111,7 +112,7 @@ class _CustomerListState extends State<CustomerList> {
             ),
           );
         },
-      ),
+      ) : null,
       body: SafeArea(
         child: Column(
           children: [
@@ -255,106 +256,112 @@ class _CustomerListState extends State<CustomerList> {
                                                 );
                                               }),
                                           SizedBox(width: 5),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute<void>(
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          EditCustomerPage(
-                                                    docid: document['docId'],
+                                          Visibility(
+                                            visible: kIsAdmin,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute<void>(
+                                                    builder:
+                                                        (BuildContext context) =>
+                                                            EditCustomerPage(
+                                                      docid: document['docId'],
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              width: 40,
-                                              height: 40,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.green.shade300,
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              child: Icon(Icons.edit, size: 15),
+                                                );
+                                              },
+                                              child: Container(
+                                                width: 40,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.green.shade300,
+                                                    borderRadius:
+                                                        BorderRadius.circular(5)),
+                                                child: Icon(Icons.edit, size: 15),
+                                              ),
                                             ),
                                           ),
                                           SizedBox(width: 5),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              showDialog<void>(
-                                                context: context,
-                                                barrierDismissible:
-                                                    false, // user must tap button!
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    // <-- SEE HERE
-                                                    title: const Text(
-                                                        'Delete Customer'),
-                                                    content:
-                                                        SingleChildScrollView(
-                                                      child: ListBody(
-                                                        children: const <
-                                                            Widget>[
-                                                          Text(
-                                                              'Are you sure want to detele Customer?'),
-                                                        ],
+                                          Visibility(
+                                            visible: kIsAdmin,
+                                            child: GestureDetector(
+                                              onTap: () async {
+                                                showDialog<void>(
+                                                  context: context,
+                                                  barrierDismissible:
+                                                      false, // user must tap button!
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      // <-- SEE HERE
+                                                      title: const Text(
+                                                          'Delete Customer'),
+                                                      content:
+                                                          SingleChildScrollView(
+                                                        child: ListBody(
+                                                          children: const <
+                                                              Widget>[
+                                                            Text(
+                                                                'Are you sure want to detele Customer?'),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        child: const Text('No'),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                      ),
-                                                      TextButton(
-                                                        child:
-                                                            const Text('Yes'),
-                                                        onPressed: () async {
-                                                          await FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'Customerslist')
-                                                              .doc(document.id)
-                                                              .delete();
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          await _getTotalDocuments();
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          child: const Text('No'),
+                                                          onPressed: () {
+                                                            Navigator.of(context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                        TextButton(
+                                                          child:
+                                                              const Text('Yes'),
+                                                          onPressed: () async {
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'Customerslist')
+                                                                .doc(document.id)
+                                                                .delete();
+                                                            Navigator.of(context)
+                                                                .pop();
+                                                            await _getTotalDocuments();
 
-                                                          Fluttertoast.showToast(
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .black54,
-                                                              msg:
-                                                                  "Customer Deleted",
-                                                              toastLength: Toast
-                                                                  .LENGTH_SHORT,
-                                                              gravity:
-                                                                  ToastGravity
-                                                                      .SNACKBAR,
-                                                              timeInSecForIosWeb:
-                                                                  1,
-                                                              textColor:
-                                                                  Colors.white,
-                                                              fontSize: 16.0);
-                                                          setState(() {});
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            },
-                                            child: Container(
-                                              width: 40,
-                                              height: 40,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.green.shade300,
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              child:
-                                                  Icon(Icons.delete, size: 15),
+                                                            Fluttertoast.showToast(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .black54,
+                                                                msg:
+                                                                    "Customer Deleted",
+                                                                toastLength: Toast
+                                                                    .LENGTH_SHORT,
+                                                                gravity:
+                                                                    ToastGravity
+                                                                        .SNACKBAR,
+                                                                timeInSecForIosWeb:
+                                                                    1,
+                                                                textColor:
+                                                                    Colors.white,
+                                                                fontSize: 16.0);
+                                                            setState(() {});
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              child: Container(
+                                                width: 40,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.green.shade300,
+                                                    borderRadius:
+                                                        BorderRadius.circular(5)),
+                                                child:
+                                                    Icon(Icons.delete, size: 15),
+                                              ),
                                             ),
                                           )
                                         ],
