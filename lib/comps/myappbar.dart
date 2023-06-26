@@ -1,7 +1,3 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travellog/auth/loginpage.dart';
@@ -238,34 +234,40 @@ class _logoutButtonState extends State<logoutButton> {
                     'Yes',
                     textScaleFactor: 1.0,
                   ),
-                  onPressed: () async {
-                    if (kIsAdmin) {
-                      var fcmToken =
-                          await FirebaseMessaging.instance.getToken();
-                      var snapshot = await FirebaseFirestore.instance
-                          .collection("FcmToken")
-                          .where("email", isEqualTo: 'admin@gmail.com')
-                          .get();
-                      var docId = snapshot.docs.first.id;
-                      List fcmList = snapshot.docs.first.get('fcmTokens');
-                      if (fcmList.contains(fcmToken)) {
-                        fcmList.remove(fcmToken);
-                        log('$fcmList');
-                        await FirebaseFirestore.instance
-                            .collection("FcmToken")
-                            .doc(docId)
-                            .update({'fcmTokens': fcmList});
-                        log('$fcmToken has been removed');
-                      }
-                    }
-                    // await _auth.signOut();
-                    if (mounted) {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()));
-                    }
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()));
                   },
+                  // onPressed: () async {
+                  //   if (kIsAdmin) {
+                  //     var fcmToken =
+                  //         await FirebaseMessaging.instance.getToken();
+                  //     var snapshot = await FirebaseFirestore.instance
+                  //         .collection("FcmToken")
+                  //         .where("email", isEqualTo: 'admin@gmail.com')
+                  //         .get();
+                  //     var docId = snapshot.docs.first.id;
+                  //     List fcmList = snapshot.docs.first.get('fcmTokens');
+                  //     if (fcmList.contains(fcmToken)) {
+                  //       fcmList.remove(fcmToken);
+                  //       log('$fcmList');
+                  //       await FirebaseFirestore.instance
+                  //           .collection("FcmToken")
+                  //           .doc(docId)
+                  //           .update({'fcmTokens': fcmList});
+                  //       log('$fcmToken has been removed');
+                  //     }
+                  //   }
+                  //   // await _auth.signOut();
+                  //   if (mounted) {
+                  //     Navigator.pushReplacement(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => const LoginPage()));
+                  //   }
+                  // },
                 ),
               ],
             );

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -84,25 +83,26 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  void updateFCM() async {
-    var fcmToken = await FirebaseMessaging.instance.getToken();
-    log('$fcmToken has been added');
-    var snapshot = await FirebaseFirestore.instance
-        .collection("FcmToken")
-        .where("email", isEqualTo: 'admin@gmail.com')
-        .get();
-    var docId = snapshot.docs.first.id;
-    List fcmList = snapshot.docs.first.get('fcmTokens');
-    if (fcmList.contains(fcmToken)) {
-      return;
-    } else {
-      fcmList.add(fcmToken);
-      FirebaseFirestore.instance
-          .collection("FcmToken")
-          .doc(docId)
-          .update({'fcmTokens': fcmList});
-    }
-  }
+
+  // void updateFCM() async {
+  //   var fcmToken = await FirebaseMessaging.instance.getToken();
+  //   log('$fcmToken has been added');
+  //   var snapshot = await FirebaseFirestore.instance
+  //       .collection("FcmToken")
+  //       .where("email", isEqualTo: 'admin@gmail.com')
+  //       .get();
+  //   var docId = snapshot.docs.first.id;
+  //   List fcmList = snapshot.docs.first.get('fcmTokens');
+  //   if (fcmList.contains(fcmToken)) {
+  //     return;
+  //   } else {
+  //     fcmList.add(fcmToken);
+  //     FirebaseFirestore.instance
+  //         .collection("FcmToken")
+  //         .doc(docId)
+  //         .update({'fcmTokens': fcmList});
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

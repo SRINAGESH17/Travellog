@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,58 +23,9 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  // String _errorMessage = '';
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   bool _isLoading = false;
-
-  // Future<void> signInWithEmail() async {
-  //   if (_formKey.currentState!.validate()) {
-  //     try {
-  //       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-  //         email: emailController.text,
-  //         password: passwordController.text,
-  //       );
-  //       User user = userCredential.user!;
-  //       print('User ${user.uid} logged in');
-  //       Navigator.pushAndRemoveUntil(
-  //           context,
-  //           MaterialPageRoute(builder: (context) => HomePage()),
-  //           ModalRoute.withName("/Home"));
-  //     } on FirebaseAuthException catch (e) {
-  //       var errorCode = e.code;
-  //       var errorMessage = e.message;
-  //       if (errorCode == 'auth/wrong-password') {
-  //         setState(() {
-  //           _errorMessage = 'Enter the Correct Password';
-  //         });
-  //       }
-  //       if (e.code == 'user-not-found') {
-  //         setState(() {
-  //           _errorMessage = 'User not found';
-  //         });
-  //       } else if (e.code == 'wrong-password') {
-  //         setState(() {
-  //           _errorMessage = 'Incorrect password';
-  //         });
-  //       }
-  //     } catch (e) {
-  //       print('Error: $e');
-  //     }
-  //
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text(
-  //           _errorMessage,
-  //           style: TextStyle(
-  //             color: Colors.red,
-  //           ),
-  //         ),
-  //         duration: Duration(seconds: 3),
-  //       ),
-  //     );
-  //   }
-  // }
 
   Future<bool?> _signInAdmin(String email, String password) async {
     final CollectionReference collectionRef = _firestore.collection('admin');
@@ -118,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
 
       return null;
     } catch (error) {
-      print('Error: $error');
+      log('Error: $error');
       return null;
     }
   }
@@ -167,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
 
       return null;
     } catch (error) {
-      print('Error: $error');
+      log('Error: $error');
       return null;
     }
   }
@@ -225,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
         _isLoading = false;
       });
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       setState(() {
         _isLoading = false;
       });
